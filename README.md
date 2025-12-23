@@ -1,0 +1,100 @@
+# Cypress API Testing - Restful API Dev
+
+Suite de testes automatizados de API para o serviço [Restful API Dev](https://restful-api.dev/), focada na validação de endpoints REST utilizando Cypress e geração de massa de dados dinâmica.
+
+---
+
+## 🚀 Tecnologias
+
+| Tecnologia | Versão | Finalidade                 |
+| ---------- | ------ | -------------------------- |
+| Cypress    | 15.8.1 | Framework de testes        |
+| Faker.js   | 10.1.0 | Geração de dados dinâmicos |
+| Node.js    | 18+    | Runtime JavaScript         |
+
+---
+
+## Estrutura do Projeto
+
+```
+cypress-api-test/
+├── cypress/
+│   ├── e2e/
+│   │   ├── get.api.cy.js        # Testes de consulta (GET)
+│   │   └── post.api.cy.js       # Testes de cadastro (POST)
+│   ├── fixtures/
+│   │   └── devices.json         # Massa de dados para testes
+│   └── support/
+│       ├── commands.js          # Comandos customizados
+│       └── e2e.js               # Configuração global
+├── cypress.config.js            # Configurações do Cypress
+├── package.json                 # Dependências do projeto
+└── README.md                    # Documentação do projeto
+```
+
+---
+
+## Padrões de Projeto
+
+- **Data Driven Testing**: Uso de fixtures (`devices.json`) para validar múltiplos cenários de consulta.
+- **Dynamic Data Generation**: Utilização da biblioteca `Faker.js` para criar massas de dados aleatórias e robustas para os testes de cadastro.
+- **API Testing**: Validações diretas de status code, corpo da resposta e contratos de API.
+
+---
+
+## Funcionalidades Testadas
+
+### GET
+
+| Cenário             | Validações |
+| ------------------- | ---------- |
+| Busca por ID válido | Status 200, Contrato do objeto, Dados retornados iguais à fixture |
+
+### POST
+
+| Cenário             | Validações |
+| ------------------- | ---------- |
+| Cadastro com sucesso| Status 200, Geração de ID, Persistência dos dados enviados (Nome, Data, Specs) |
+
+---
+
+## Instalação
+
+```bash
+git clone https://github.com/ucgfilho/cypress-api-test.git
+cd cypress-api-test
+npm install
+```
+
+---
+
+## Execução
+
+```bash
+# Modo interativo (Cypress App)
+npx cypress open
+
+# Modo Headless (Terminal)
+npx cypress run
+
+# Executar apenas testes de GET
+npx cypress run --spec "cypress/e2e/get.api.cy.js"
+
+# Executar apenas testes de POST
+npx cypress run --spec "cypress/e2e/post.api.cy.js"
+```
+
+---
+
+## Autor
+
+**Ubirajara Filho**
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ucgfilho/)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ucgfilho)
+
+---
+
+## Licença
+
+Este projeto está sob a licença MIT.
