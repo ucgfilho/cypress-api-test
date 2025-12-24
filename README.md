@@ -20,8 +20,10 @@ Suite de testes automatizados de API para o serviço [Restful API Dev](https://r
 cypress-api-test/
 ├── cypress/
 │   ├── e2e/
+│   │   ├── delete.api.cy.js     # Testes de exclusão (DELETE)
 │   │   ├── get.api.cy.js        # Testes de consulta (GET)
-│   │   └── post.api.cy.js       # Testes de cadastro (POST)
+│   │   ├── post.api.cy.js       # Testes de cadastro (POST)
+│   │   └── put.api.cy.js        # Testes de atualização (PUT)
 │   ├── fixtures/
 │   │   └── devices.json         # Massa de dados para testes
 │   └── support/
@@ -46,15 +48,31 @@ cypress-api-test/
 
 ### GET
 
-| Cenário             | Validações |
-| ------------------- | ---------- |
-| Busca por ID válido | Status 200, Contrato do objeto, Dados retornados iguais à fixture |
+| Cenário                  | Validações                                                        |
+| ------------------------ | ----------------------------------------------------------------- |
+| Busca por ID válido      | Status 200, Contrato do objeto, Dados retornados iguais à fixture |
+| Busca por ID inexistente | Status 404, Mensagem de erro                                      |
 
 ### POST
 
-| Cenário             | Validações |
-| ------------------- | ---------- |
-| Cadastro com sucesso| Status 200, Geração de ID, Persistência dos dados enviados (Nome, Data, Specs) |
+| Cenário                    | Validações                                                 |
+| -------------------------- | ---------------------------------------------------------- |
+| Cadastro com sucesso       | Status 200, Geração de ID, Persistência dos dados enviados |
+| Year maior que o ano atual | Status diferente de 200, Mensagem de erro                  |
+| Year em formato string     | Status diferente de 200, Mensagem de erro                  |
+| Price em formato string    | Status diferente de 200, Mensagem de erro                  |
+| POST sem body              | Status 400, Mensagem de erro de bad request                |
+| POST com body vazio        | Status diferente de 200, Mensagem de erro                  |
+| POST sem o campo name      | Status diferente de 200, Mensagem de erro                  |
+
+### PUT
+
+| Cenário                 | Validações                                  |
+| ----------------------- | ------------------------------------------- |
+| Atualização com sucesso | Status 200, Dados atualizados corretamente  |
+| Year em formato string  | Status diferente de 200, Mensagem de erro   |
+| Price em formato string | Status diferente de 200, Mensagem de erro   |
+| PUT sem o campo name    | Status 400, Mensagem de erro de bad request |
 
 ---
 
@@ -82,6 +100,12 @@ npx cypress run --spec "cypress/e2e/get.api.cy.js"
 
 # Executar apenas testes de POST
 npx cypress run --spec "cypress/e2e/post.api.cy.js"
+
+# Executar apenas testes de PUT
+npx cypress run --spec "cypress/e2e/put.api.cy.js"
+
+# Executar apenas testes de DELETE
+npx cypress run --spec "cypress/e2e/delete.api.cy.js"
 ```
 
 ---
