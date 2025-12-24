@@ -41,6 +41,18 @@ cypress-api-test/
 - **Data Driven Testing**: Uso de fixtures (`devices.json`) para validar múltiplos cenários de consulta.
 - **Dynamic Data Generation**: Utilização da biblioteca `Faker.js` para criar massas de dados aleatórias e robustas para os testes de cadastro.
 - **API Testing**: Validações diretas de status code, corpo da resposta e contratos de API.
+- **Custom Commands**: CRUD centralizado em `cypress/support/commands.js` (`createDevice`, `getDevice`, `updateDevice`, `deleteDevice`) reutilizando `cy.request` e a `baseUrl` configurada no `cypress.config.js`.
+
+---
+
+## Comandos customizados
+
+| Comando           | Descrição                         |
+| ----------------- | --------------------------------- |
+| `cy.createDevice` | POST `/objects` com body dinâmico |
+| `cy.getDevice`    | GET `/objects/{id}`               |
+| `cy.updateDevice` | PUT `/objects/{id}`               |
+| `cy.deleteDevice` | DELETE `/objects/{id}`            |
 
 ---
 
@@ -107,6 +119,8 @@ npx cypress run --spec "cypress/e2e/put.api.cy.js"
 # Executar apenas testes de DELETE
 npx cypress run --spec "cypress/e2e/delete.api.cy.js"
 ```
+
+> Observação: a API pública `restful-api.dev` limita o número de requisições por dia (~100). Se atingir o limite, novas chamadas podem retornar 405/429/403 até o reset diário do provedor.
 
 ---
 
