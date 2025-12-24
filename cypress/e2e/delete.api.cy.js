@@ -15,26 +15,13 @@ describe("Deleta dispositivos", () => {
   };
 
   it("Deleta dispositivo por ID", () => {
-    // Realiza POST para garantir que há um dispositivo para deletar
-    cy.request({
-      method: "POST",
-      url: "https://api.restful-api.dev/objects",
-      failOnStatusCode: false,
-      body: body,
-    }).as("postResult");
+    cy.createDevice(body).as("postResult");
 
-    // Valida POST
     cy.get("@postResult").then((response_post) => {
       expect(response_post.status).to.equal(200);
 
-      // Deleta o dispositivo criado
-      cy.request({
-        method: "DELETE",
-        url: `https://api.restful-api.dev/objects/${response_post.body.id}`,
-        failOnStatusCode: false,
-      }).as("deleteResult");
+      cy.deleteDevice(response_post.body.id).as("deleteResult");
 
-      // Valida DELETE
       cy.get("@deleteResult").then((response_del) => {
         expect(response_del.status).to.equal(200);
         expect(response_del.body.message).to.equal(

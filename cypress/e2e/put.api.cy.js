@@ -54,28 +54,14 @@ describe("Atualiza dispositivos", () => {
     },
   };
 
-  it.only("Atualiza dispositivo", () => {
-    // Cria dispositivo
-    cy.request({
-      method: "POST",
-      url: "https://api.restful-api.dev/objects",
-      failOnStatusCode: false,
-      body: bodyPost,
-    }).as("postResult");
+  it("Atualiza dispositivo", () => {
+    cy.createDevice(bodyPost).as("postResult");
 
     cy.get("@postResult").then((response_post) => {
-      // Valida POST
       expect(response_post.status).to.equal(200);
 
-      // Atualiza o dispositivo criado
-      cy.request({
-        method: "PUT",
-        url: `https://api.restful-api.dev/objects/${response_post.body.id}`,
-        failOnStatusCode: false,
-        body: bodyPut,
-      }).as("putResult");
+      cy.updateDevice(response_post.body.id, bodyPut).as("putResult");
 
-      // Valida PUT
       cy.get("@putResult").then((response_put) => {
         expect(response_put.status).equal(200);
         expect(response_put.body.name).to.equal(bodyPut.name);
@@ -85,27 +71,13 @@ describe("Atualiza dispositivos", () => {
   });
 
   it("Atualiza dispositivo com year em formato string", () => {
-    // Cria dispositivo
-    cy.request({
-      method: "POST",
-      url: "https://api.restful-api.dev/objects",
-      failOnStatusCode: false,
-      body: bodyPost,
-    }).as("postResult");
+    cy.createDevice(bodyPost).as("postResult");
 
     cy.get("@postResult").then((response_post) => {
-      // Valida POST
       expect(response_post.status).to.equal(200);
 
-      // Atualiza o dispositivo criado
-      cy.request({
-        method: "PUT",
-        url: `https://api.restful-api.dev/objects/${response_post.body.id}`,
-        failOnStatusCode: false,
-        body: bodyPutYearString,
-      }).as("putResult");
+      cy.updateDevice(response_post.body.id, bodyPutYearString).as("putResult");
 
-      // Valida PUT
       cy.get("@putResult").then((response_put) => {
         expect(response_put.body.error).to.exist;
       });
@@ -113,27 +85,15 @@ describe("Atualiza dispositivos", () => {
   });
 
   it("Atualiza dispositivo com price em formato string", () => {
-    // Cria dispositivo
-    cy.request({
-      method: "POST",
-      url: "https://api.restful-api.dev/objects",
-      failOnStatusCode: false,
-      body: bodyPost,
-    }).as("postResult");
+    cy.createDevice(bodyPost).as("postResult");
 
     cy.get("@postResult").then((response_post) => {
-      // Valida POST
       expect(response_post.status).to.equal(200);
 
-      // Atualiza o dispositivo criado
-      cy.request({
-        method: "PUT",
-        url: `https://api.restful-api.dev/objects/${response_post.body.id}`,
-        failOnStatusCode: false,
-        body: bodyPutPriceString,
-      }).as("putResult");
+      cy.updateDevice(response_post.body.id, bodyPutPriceString).as(
+        "putResult"
+      );
 
-      // Valida PUT
       cy.get("@putResult").then((response_put) => {
         expect(response_put.body.error).to.exist;
       });
@@ -141,27 +101,13 @@ describe("Atualiza dispositivos", () => {
   });
 
   it("Atualiza dispositivo removendo o name do body", () => {
-    // Cria dispositivo
-    cy.request({
-      method: "POST",
-      url: "https://api.restful-api.dev/objects",
-      failOnStatusCode: false,
-      body: bodyPost,
-    }).as("postResult");
+    cy.createDevice(bodyPost).as("postResult");
 
     cy.get("@postResult").then((response_post) => {
-      // Valida POST
       expect(response_post.status).to.equal(200);
 
-      // Atualiza o dispositivo criado
-      cy.request({
-        method: "PUT",
-        url: `https://api.restful-api.dev/objects/${response_post.body.id}`,
-        failOnStatusCode: false,
-        body: bodyWithoutName,
-      }).as("putResult");
+      cy.updateDevice(response_post.body.id, bodyWithoutName).as("putResult");
 
-      // Valida PUT
       cy.get("@putResult").then((response_put) => {
         expect(response_put.body.error).to.equal(
           "400 Bad Request. If you are trying to create or update the data, potential issue is that you are sending incorrect body json or it is missing at all."

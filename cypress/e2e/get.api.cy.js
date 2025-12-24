@@ -5,14 +5,8 @@ import devices from "../fixtures/devices.json";
 describe("Busca dispositivos", () => {
   devices.forEach((device) => {
     it(`Busca dispositivo por ID`, () => {
-      // Realiza GET por ID
-      cy.request({
-        method: "GET",
-        url: `https://api.restful-api.dev/objects/${device.id}`,
-        failOnStatusCode: false,
-      }).as("getResult");
+      cy.getDevice(device.id).as("getResult");
 
-      // Valida GET
       cy.get("@getResult").then((response) => {
         console.log(response);
         expect(response.status).to.equal(200);
@@ -26,14 +20,8 @@ describe("Busca dispositivos", () => {
   });
 
   it("Retorna erro ao buscar dispositivo com ID inexistente", () => {
-    // Realiza GET por ID inexistente
-    cy.request({
-      method: "GET",
-      url: "https://api.restful-api.dev/objects/16",
-      failOnStatusCode: false,
-    }).as("getResult");
+    cy.getDevice("16").as("getResult");
 
-    // Valida GET
     cy.get("@getResult").then((response) => {
       expect(response.status).to.equal(404);
       expect(response.body.error).to.equal("Oject with id=16 was not found.");

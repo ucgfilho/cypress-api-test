@@ -55,15 +55,9 @@ describe("Cadastra dispositivo", () => {
     },
   };
 
-  it.only("Realiza POST válido", () => {
-    cy.request({
-      method: "POST",
-      url: "https://api.restful-api.dev/objects",
-      failOnStatusCode: false,
-      body: body,
-    }).as("postResult");
+  it("Realiza POST válido", () => {
+    cy.createDevice(body).as("postResult");
 
-    // Valida POST
     cy.get("@postResult").then((response) => {
       expect(response.status).to.equal(200);
       expect(response.body.id).to.exist;
@@ -74,12 +68,7 @@ describe("Cadastra dispositivo", () => {
   });
 
   it("Realiza POST com year maior que o ano atual", () => {
-    cy.request({
-      method: "POST",
-      url: "https://api.restful-api.dev/objects",
-      failOnStatusCode: false,
-      body: bodyYearFuturo,
-    }).as("postResult");
+    cy.createDevice(bodyYearFuturo).as("postResult");
 
     cy.get("@postResult").then((response) => {
       expect(response.body.error).to.exist;
@@ -87,44 +76,28 @@ describe("Cadastra dispositivo", () => {
   });
 
   it("Realiza POST com year em formato string", () => {
-    // Realiza POST para cadastrar dispositivo
-    cy.request({
-      method: "POST",
-      url: "https://api.restful-api.dev/objects",
-      failOnStatusCode: false,
-      body: bodyYearString,
-    }).as("postResult");
+    cy.createDevice(bodyYearString).as("postResult");
 
-    // Valida POST
     cy.get("@postResult").then((response) => {
       expect(response.body.error);
     });
   });
 
   it("Realiza POST com price em formato string", () => {
-    // Realiza POST para cadastrar dispositivo
-    cy.request({
-      method: "POST",
-      url: "https://api.restful-api.dev/objects",
-      failOnStatusCode: false,
-      body: bodyPriceString,
-    }).as("postResult");
+    cy.createDevice(bodyPriceString).as("postResult");
 
-    // Valida POST
     cy.get("@postResult").then((response) => {
       expect(response.body.error);
     });
   });
 
   it("Realiza POST sem body", () => {
-    // Realiza POST sem body
     cy.request({
       method: "POST",
-      url: "https://api.restful-api.dev/objects",
+      url: "/objects",
       failOnStatusCode: false,
     }).as("postResult");
 
-    // Valida POST
     cy.get("@postResult").then((response) => {
       expect(response.body.error).to.equal(
         "400 Bad Request. If you are trying to create or update the data, potential issue is that you are sending incorrect body json or it is missing at all."
@@ -133,30 +106,16 @@ describe("Cadastra dispositivo", () => {
   });
 
   it("Realiza POST com body vazio", () => {
-    // Realiza POST com body vazio
-    cy.request({
-      method: "POST",
-      url: "https://api.restful-api.dev/objects",
-      failOnStatusCode: false,
-      body: {},
-    }).as("postResult");
+    cy.createDevice({}).as("postResult");
 
-    // Valida POST
     cy.get("@postResult").then((response) => {
       expect(response.body.error).to.exist;
     });
   });
 
   it("Realiza POST sem o campo name", () => {
-    // Realiza POST sem o campo name
-    cy.request({
-      method: "POST",
-      url: "https://api.restful-api.dev/objects",
-      failOnStatusCode: false,
-      body: bodyWithoutName,
-    }).as("postResult");
+    cy.createDevice(bodyWithoutName).as("postResult");
 
-    // Valida POST
     cy.get("@postResult").then((response) => {
       expect(response.body.error).to.exist;
     });
