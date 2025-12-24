@@ -1,82 +1,36 @@
 /// <reference types="cypress" />
-
-import { faker } from "@faker-js/faker";
+import payloads from "../fixtures/payloads.json";
 
 describe("Atualiza dispositivos", () => {
-  // Gera dados dinâmicos para o body
-  const bodyPost = {
-    name: faker.commerce.productName(),
-    data: {
-      year: faker.date.past({ years: 10 }).getFullYear(),
-      price: Number(faker.commerce.price({ min: 100, max: 5000 })),
-      "CPU model": "Intel Core i9",
-      "Hard disk size": `${faker.number.int({ min: 256, max: 2048 })} GB`,
-    },
-  };
-
-  const bodyPut = {
-    name: faker.commerce.productName(),
-    data: {
-      year: faker.date.past({ years: 10 }).getFullYear(),
-      price: Number(faker.commerce.price({ min: 100, max: 5000 })),
-      "CPU model": "Intel Core i9",
-      "Hard disk size": `${faker.number.int({ min: 256, max: 2048 })} GB`,
-    },
-  };
-
-  // Bodies para testes negativos
-  const bodyPutYearString = {
-    name: faker.commerce.productName(),
-    data: {
-      year: "2019",
-      price: 1849.99,
-      "CPU model": "Intel Core i9",
-      "Hard disk size": "1 TB",
-    },
-  };
-
-  const bodyPutPriceString = {
-    name: faker.commerce.productName(),
-    data: {
-      year: 2019,
-      price: "1849.99",
-      "CPU model": "Intel Core i9",
-      "Hard disk size": "1 TB",
-    },
-  };
-
-  const bodyWithoutName = {
-    data: {
-      year: 2019,
-      price: 1849.99,
-      "CPU model": "Intel Core i9",
-      "Hard disk size": "1 TB",
-    },
-  };
-
   it("Atualiza dispositivo", () => {
-    cy.createDevice(bodyPost).as("postResult");
+    cy.createDevice(payloads.deviceSuccess).as("postResult");
 
     cy.get("@postResult").then((response_post) => {
       expect(response_post.status).to.equal(200);
 
-      cy.updateDevice(response_post.body.id, bodyPut).as("putResult");
+      cy.updateDevice(response_post.body.id, payloads.deviceUpdate).as(
+        "putResult"
+      );
 
       cy.get("@putResult").then((response_put) => {
         expect(response_put.status).equal(200);
-        expect(response_put.body.name).to.equal(bodyPut.name);
-        expect(response_put.body.data).to.deep.equal(bodyPut.data);
+        expect(response_put.body.name).to.equal(payloads.deviceUpdate.name);
+        expect(response_put.body.data).to.deep.equal(
+          payloads.deviceUpdate.data
+        );
       });
     });
   });
 
   it("Atualiza dispositivo com year em formato string", () => {
-    cy.createDevice(bodyPost).as("postResult");
+    cy.createDevice(payloads.deviceSuccess).as("postResult");
 
     cy.get("@postResult").then((response_post) => {
       expect(response_post.status).to.equal(200);
 
-      cy.updateDevice(response_post.body.id, bodyPutYearString).as("putResult");
+      cy.updateDevice(response_post.body.id, payloads.deviceYearString).as(
+        "putResult"
+      );
 
       cy.get("@putResult").then((response_put) => {
         expect(response_put.body.error).to.exist;
@@ -85,12 +39,12 @@ describe("Atualiza dispositivos", () => {
   });
 
   it("Atualiza dispositivo com price em formato string", () => {
-    cy.createDevice(bodyPost).as("postResult");
+    cy.createDevice(payloads.deviceSuccess).as("postResult");
 
     cy.get("@postResult").then((response_post) => {
       expect(response_post.status).to.equal(200);
 
-      cy.updateDevice(response_post.body.id, bodyPutPriceString).as(
+      cy.updateDevice(response_post.body.id, payloads.devicePriceString).as(
         "putResult"
       );
 
@@ -101,12 +55,14 @@ describe("Atualiza dispositivos", () => {
   });
 
   it("Atualiza dispositivo removendo o name do body", () => {
-    cy.createDevice(bodyPost).as("postResult");
+    cy.createDevice(payloads.deviceSuccess).as("postResult");
 
     cy.get("@postResult").then((response_post) => {
       expect(response_post.status).to.equal(200);
 
-      cy.updateDevice(response_post.body.id, bodyWithoutName).as("putResult");
+      cy.updateDevice(response_post.body.id, payloads.deviceWithoutName).as(
+        "putResult"
+      );
 
       cy.get("@putResult").then((response_put) => {
         expect(response_put.body.error).to.equal(

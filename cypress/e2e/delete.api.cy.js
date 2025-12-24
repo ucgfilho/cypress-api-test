@@ -1,21 +1,9 @@
 /// <reference types="cypress" />
-
-import { faker } from "@faker-js/faker";
+import payloads from "../fixtures/payloads.json";
 
 describe("Deleta dispositivos", () => {
-  // Gera dados dinâmicos para o body
-  const body = {
-    name: faker.commerce.productName(),
-    data: {
-      year: faker.date.past({ years: 10 }).getFullYear(),
-      price: Number(faker.commerce.price({ min: 100, max: 5000 })),
-      "CPU model": "Intel Core i9",
-      "Hard disk size": `${faker.number.int({ min: 256, max: 2048 })} GB`,
-    },
-  };
-
   it("Deleta dispositivo por ID", () => {
-    cy.createDevice(body).as("postResult");
+    cy.createDevice(payloads.deviceSuccess).as("postResult");
 
     cy.get("@postResult").then((response_post) => {
       expect(response_post.status).to.equal(200);

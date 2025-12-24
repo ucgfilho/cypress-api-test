@@ -1,16 +1,15 @@
 # Cypress API Testing - Restful API Dev
 
-Suite de testes automatizados de API para o serviço [Restful API Dev](https://restful-api.dev/), focada na validação de endpoints REST utilizando Cypress e geração de massa de dados dinâmica.
+Suite de testes automatizados de API para o serviço [Restful API Dev](https://restful-api.dev/), focada na validação de endpoints REST utilizando Cypress e massa de dados estática.
 
 ---
 
 ## 🚀 Tecnologias
 
-| Tecnologia | Versão | Finalidade                 |
-| ---------- | ------ | -------------------------- |
-| Cypress    | 15.8.1 | Framework de testes        |
-| Faker.js   | 10.1.0 | Geração de dados dinâmicos |
-| Node.js    | 18+    | Runtime JavaScript         |
+| Tecnologia | Versão | Finalidade          |
+| ---------- | ------ | ------------------- |
+| Cypress    | 15.8.1 | Framework de testes |
+| Node.js    | 18+    | Runtime JavaScript  |
 
 ---
 
@@ -38,8 +37,7 @@ cypress-api-test/
 
 ## Padrões de Projeto
 
-- **Data Driven Testing**: Uso de fixtures (`devices.json`) para validar múltiplos cenários de consulta.
-- **Dynamic Data Generation**: Utilização da biblioteca `Faker.js` para criar massas de dados aleatórias e robustas para os testes de cadastro.
+- **Data Driven Testing**: Uso de fixtures (`devices.json` e `payloads.json`) para validar múltiplos cenários com massa de dados estática.
 - **API Testing**: Validações diretas de status code, corpo da resposta e contratos de API.
 - **Custom Commands**: CRUD centralizado em `cypress/support/commands.js` (`createDevice`, `getDevice`, `updateDevice`, `deleteDevice`) reutilizando `cy.request` e a `baseUrl` configurada no `cypress.config.js`.
 
